@@ -1,6 +1,8 @@
 let video = document.getElementById('display');
 let canvas = document.getElementById('#overlay');
 let context = canvas.getContext('2d');
+let img = new Image();
+img.src = "../image/tomoko.png";
 
 var constraints = {
     video: {
@@ -32,5 +34,6 @@ video.addEventListener("loadedmetadata",function(e) {
         //videoタグの描画をコンテキストに描画
         context.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(video,0,0,canvas.width,canvas.height);
+        ctx.drawImage(img, 0, 0)
     },33);      
 });
