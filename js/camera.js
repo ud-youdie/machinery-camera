@@ -13,20 +13,7 @@ tomoko.onload = () => {
     tomokoHeight = tomoko.height;
 }
 
-var constraints = {
-    video: {
-        facingMode : "environment"
-    },
-    audio: false
-};
-
-navigator.mediaDevices.getUserMedia(constraints)
-.then((stream) => {
-    video.srcObject = stream;
-}).catch((err) => {
-    alert("カメラが使えないよ\n" + err.name + ":" + err.message);
-    return;
-});
+setCamera();
 
 let timer;
 let isCapturing = false;
@@ -53,12 +40,32 @@ canvas.addEventListener("click",(e) => {
 
 });
 
-window.addEventListener("resize",(e) => {
+window.addEventListener("orientationchange",(e) => {
     if(isCapturing){
+        setCamera();
         adjustDisplay();
         drawTomoko();
     }
 });
+
+function setCamera(){
+
+    let constraints = {
+        video: {
+            facingMode : "environment",
+            aspectRatio: window.innerWidth / window.innerHeight
+        },
+        audio: false
+    };
+    
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => {
+        video.srcObject = stream;
+    }).catch((err) => {
+        alert("カメラが使えないよ\n" + err.name + ":" + err.message);
+        return;
+    });
+}
 
 function adjustDisplay(){
     var ratio = window.innerWidth / video.videoWidth;
