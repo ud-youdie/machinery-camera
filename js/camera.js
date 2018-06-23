@@ -45,11 +45,14 @@ canvas.addEventListener("click",(e) => {
 });
 
 window.addEventListener("orientationchange",(e) => {
+    /*
     if(isCapturing){
         setCamera();
         adjustDisplay();
         drawTomoko();
     }
+    */
+   location.reload(false);
 });
 
 function setCamera(ort){
