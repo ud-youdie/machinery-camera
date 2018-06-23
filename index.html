@@ -51,5 +51,17 @@
             <canvas id="overlay" class="overlay"></canvas>
         </div>
         <script src="./js/camera.js"></script>
+        <script>
+            window.addEventListener('load', function() {
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register("./js/serviceWorker.js")
+                  .then(function(registration) {
+                    console.log("serviceWorker registed.");
+                  }).catch(function(error) {
+                    console.warn("serviceWorker error.", error);
+                  });
+              }
+            });
+        </script>
     </body>
 </html>
