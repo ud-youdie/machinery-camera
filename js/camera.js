@@ -21,9 +21,9 @@ var constraints = {
 };
 
 navigator.mediaDevices.getUserMedia(constraints)
-.then(function (stream) { // success
-    video.src = window.URL.createObjectURL(stream);
-}).catch(function (err) { // error
+.then((stream) => { // success
+    video.src = stream;
+}).catch((err) => { // error
     alert("カメラが使えないよ\n" + err.name + ":" + err.message);
     return;
 });
