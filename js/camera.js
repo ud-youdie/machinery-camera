@@ -3,7 +3,9 @@ let localStream;
 
 // start local video
 function startVideo() {
-    navigator.mediaDevices.getUserMedia({video: true, audio: false})
+    var medias = {video: true, audio: false};
+    medias.video.facingMode = {exact:"environment"};
+    navigator.mediaDevices.getUserMedia(medias)
     .then(function (stream) { // success
         localStream = stream;
         localVideo.src = window.URL.createObjectURL(localStream);
