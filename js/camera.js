@@ -21,7 +21,6 @@ setCamera(getOrientation());
 let timer;
 let isCapturing = false;
 video.addEventListener("loadedmetadata",(e) => {
-
     adjustDisplay();
     isCapturing = true;
     timer = setInterval(()=>{
@@ -45,9 +44,12 @@ canvas.addEventListener("click",(e) => {
 
 window.addEventListener("orientationchange",(e) => {
     if(isCapturing){
-        setCamera(getOrientation());
-        adjustDisplay();
-        drawTomoko();
+        setTimeout(()=>{
+            clearInterval(timer);
+            setCamera(getOrientation());
+            adjustDisplay();
+            drawTomoko();
+        },100);
     }
 });
 
