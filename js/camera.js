@@ -15,7 +15,7 @@ tomoko.onload = () => {
 
 var constraints = {
     video: {
-        facingMode : {exact:"environment"}
+        facingMode : "environment"
     },
     audio: false
 };
@@ -23,8 +23,8 @@ var constraints = {
 navigator.mediaDevices.getUserMedia(constraints)
 .then(function (stream) { // success
     video.src = window.URL.createObjectURL(stream);
-}).catch(function (error) { // error
-    alert("カメラが使えないよ");
+}).catch(function (err) { // error
+    alert("カメラが使えないよ\n" + err.name + ":" + err.message);
     return;
 });
 
