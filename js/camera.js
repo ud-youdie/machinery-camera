@@ -3,8 +3,13 @@ let localStream;
 
 // start local video
 function startVideo() {
-    var medias = {video: true, audio: false};
-    medias.video.facingMode = {exact:"environment"};
+    var medias = {
+        video: {
+            facingMode : {exact:"environment"}
+        },
+        audio: false
+    };
+
     navigator.mediaDevices.getUserMedia(medias)
     .then(function (stream) { // success
         localStream = stream;
