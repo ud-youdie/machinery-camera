@@ -58,7 +58,7 @@ function startCapture(){
 function drawTomoko(){
     tomokoHeight = canvas.height * 0.7;
     tomokoWidth = tomokoHeight * tomokoRatio;
-    context.drawImage(tomoko,canvas.width - tomokoWidth - 20,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
+    context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
 
 canvas.addEventListener("click",(e) => {
@@ -76,8 +76,6 @@ canvas.addEventListener("click",(e) => {
 });
 
 window.addEventListener("resize",(e) => {
-    if(isCapturing){
-        adjustDisplay();
-        drawTomoko();
-    }
+    adjustDisplay();
+    drawTomoko();
 });
