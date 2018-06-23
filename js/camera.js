@@ -34,6 +34,6 @@ video.addEventListener("loadedmetadata",function(e) {
         //videoタグの描画をコンテキストに描画
         context.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(video,0,0,canvas.width,canvas.height);
-        //ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0);
     },33);      
 });
