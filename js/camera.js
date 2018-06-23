@@ -53,7 +53,7 @@ function startCapture(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(video,0,0,canvas.width,canvas.height);
 
-    tomokoHeight = canvas.height / 0.8;
+    tomokoHeight = canvas.height * 0.8;
     tomokoWidth = tomokoHeight * tomokoRatio;
     context.drawImage(tomoko,canvas.width - tomokoWidth - 20,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
