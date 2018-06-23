@@ -52,8 +52,11 @@ function startCapture(){
     //videoタグの描画をコンテキストに描画
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(video,0,0,canvas.width,canvas.height);
+    drawTomoko();
+}
 
-    tomokoHeight = canvas.height * 0.8;
+function drawTomoko(){
+    tomokoHeight = canvas.height * 0.7;
     tomokoWidth = tomokoHeight * tomokoRatio;
     context.drawImage(tomoko,canvas.width - tomokoWidth - 20,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
@@ -70,4 +73,10 @@ canvas.addEventListener("click",(e) => {
         },33);
     }
 
+});
+
+window.addEventListener("resize",(e) => {
+    if(isCapturing){
+        drawTomoko();
+    }
 });
