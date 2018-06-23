@@ -1,5 +1,5 @@
 let video = document.getElementById('display');
-let canvas = document.getElementById('#overlay');
+let canvas = document.getElementById('overlay');
 let context = canvas.getContext('2d');
 let img = new Image();
 img.src = "../image/tomoko.png";
