@@ -8,7 +8,7 @@ function startVideo() {
         localStream = stream;
         localVideo.src = window.URL.createObjectURL(localStream);
     }).catch(function (error) { // error
-        console.error('mediaDevice.getUserMedia() error:', error);
+        alert("カメラが使えないよ");
         return;
     });
 }
