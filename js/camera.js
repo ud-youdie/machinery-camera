@@ -1,8 +1,17 @@
 let video = document.getElementById('display');
 let canvas = document.getElementById('overlay');
 let context = canvas.getContext('2d');
-let img = new Image();
-img.src = "./image/tomoko.png";
+
+let tomoko = new Image();
+tomoko.src = "./image/tomoko.png?" + new Date().getTime();
+let tomokoWidth;
+let tomokoHeight;
+let tomokoRatio;
+tomoko.onload = () => {
+    tomokoRatio = tomoko.height / tomoko.width;
+    tomokoWidth = tomoko.width;
+    tomokoHeight = tomoko.height;
+}
 
 var constraints = {
     video: {
@@ -19,21 +28,26 @@ navigator.mediaDevices.getUserMedia(constraints)
     return;
 });
 
-video.addEventListener("loadedmetadata",function(e) {
+function adjustDisplay(){
     //canvasにカメラの映像のサイズを設定
     var ratio = window.innerWidth / video.videoWidth;
     video.width = window.innerWidth;
     video.height = video.videoHeight * ratio;
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+}
 
-    //getContextで描画先を取得
-    var ctx = canvas.getContext("2d");
-    //毎フレームの実行処理
+video.addEventListener("loadedmetadata",function(e) {
+
+    adjustDisplay();
+
     setInterval(function(e) {
         //videoタグの描画をコンテキストに描画
         context.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(video,0,0,canvas.width,canvas.height);
-        ctx.drawImage(img, 0, 0);
-    },33);      
+        context.drawImage(video,0,0,canvas.width,canvas.height);
+
+        tomokoWidth = canvas.width / 4;
+        tomokoHeight = tomokoWidth * tomokoRatio;
+        context.drawImage(tomoko,canvas.width - tomokoWidth - 20,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
+        },33);      
 });
