@@ -8,7 +8,7 @@ let tomokoWidth;
 let tomokoHeight;
 let tomokoRatio;
 tomoko.onload = () => {
-    tomokoRatio = tomoko.width / tomoko.height;
+    tomokoRatio = tomoko.height / tomoko.width;
     tomokoWidth = tomoko.width;
     tomokoHeight = tomoko.height;
 }
@@ -50,10 +50,17 @@ window.addEventListener("orientationchange",(e) => {
 
 function setCamera(){
 
+    let aspectRatio;
+    if(window.innerWidth > window.innerHeight){
+        aspectRatio = window.innerWidth / window.innerHeight;
+    }else{
+        aspectRatio = window.innerHeight / window.innerWidth;
+    }
+
     let constraints = {
         video: {
             facingMode : "environment",
-            aspectRatio: window.innerWidth / window.innerHeight
+            aspectRatio: aspectRatio
         },
         audio: false
     };
@@ -82,8 +89,8 @@ function startCapture(){
 }
 
 function drawTomoko(){
-    tomokoHeight = canvas.height * 0.7;
-    tomokoWidth = tomokoHeight * tomokoRatio;
+    tomokoWidth = canvas.width / 4;
+    tomokoHeight = tomokoWidth * tomokoRatio;
     context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
 
