@@ -46,7 +46,7 @@ video.addEventListener("loadedmetadata",function(e) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(video,0,0,canvas.width,canvas.height);
 
-        tomokoWidth = canvas.width / 4;
+        tomokoWidth = canvas.width / 2.5;
         tomokoHeight = tomokoWidth * tomokoRatio;
         context.drawImage(tomoko,canvas.width - tomokoWidth - 20,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
         },33);      

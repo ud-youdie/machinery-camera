@@ -8,7 +8,7 @@
         "type": "image/png"
       }
     ],
-    "start_url": "/machinery-camera",
+    "start_url": ".",
     "display": "fullscreen",
     "orientation": "landscape"
   }
