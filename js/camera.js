@@ -15,7 +15,6 @@ tomoko.onload = () => {
 //0:横,1:縦
 const Orientation_Landscape = 0;
 const Orientation_Portrait = 1;
-
 let ort = (window.innerWidth > window.innerHeight) ? Orientation_Landscape : Orientation_Portrait;
 
 setCamera(ort);
@@ -65,7 +64,7 @@ function setCamera(ort){
     let constraints = {
         video: {
             facingMode : "environment",
-            width: 5000,
+            width: 4000, //目指せ4K画質
             aspectRatio: aspectRatio
         },
         audio: false
