@@ -3,22 +3,44 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
-            html,body{
-                margin: 0;
+            html{
+                height: 100%;
+            }
+            body{
+                margin: 0 auto;
                 padding: 0;
+                height: 100%;
+            }
+            #wrapper{
+                width: 100%;
+                height: 100%;
+                position: relative;
             }
             #display{
                 width: 100%;
                 height: 100%;
                 border-style:none;
                 margin: 0;
+                object-fit: fill
+            }
+            #overlay{
+                width: 100%;
+                height: 100%;
+                border-style:none;
+                margin: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
             }
         </style>
     </head>
     <body>
-        <video id="display" autoplay>
-            HTML5 Videoに対応していないよ
-        </video>
+        <div id="wrapper">
+            <video id="display" autoplay>
+                HTML5 Videoに対応していないよ
+            </video>
+            <canvas id="overlay" class="overlay"></canvas>
+        </div>
         <script src="./js/camera.js"></script>
     </body>
 </html>
