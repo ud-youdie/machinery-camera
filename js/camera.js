@@ -8,7 +8,7 @@ let tomokoWidth;
 let tomokoHeight;
 let tomokoRatio;
 tomoko.onload = () => {
-    tomokoRatio = tomoko.height / tomoko.width;
+    tomokoRatio = tomoko.width / tomoko.height;
     tomokoWidth = tomoko.width;
     tomokoHeight = tomoko.height;
 }
@@ -37,17 +37,37 @@ function adjustDisplay(){
     canvas.height = video.videoHeight;
 }
 
-video.addEventListener("loadedmetadata",function(e) {
+let timer;
+let isCapturing = false;
+video.addEventListener("loadedmetadata",(e) => {
 
     adjustDisplay();
+    isCapturing = true;
+    timer = setInterval(()=>{
+        startCapture();
+    },33);
+});
 
-    setInterval(function(e) {
-        //videoタグの描画をコンテキストに描画
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(video,0,0,canvas.width,canvas.height);
+function startCapture(){
+    //videoタグの描画をコンテキストに描画
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(video,0,0,canvas.width,canvas.height);
 
-        tomokoWidth = canvas.width / 2.5;
-        tomokoHeight = tomokoWidth * tomokoRatio;
-        context.drawImage(tomoko,canvas.width - tomokoWidth - 20,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
-        },33);      
+    tomokoHeight = canvas.height / 0.8;
+    tomokoWidth = tomokoHeight * tomokoRatio;
+    context.drawImage(tomoko,canvas.width - tomokoWidth - 20,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
+}
+
+canvas.addEventListener("click",(e) => {
+
+    if(isCapturing){
+        isCapturing = false;
+        clearInterval(timer);
+    }else{
+        isCapturing = true;
+        timer = setInterval(()=>{
+            startCapture();
+        },33);
+    }
+
 });
