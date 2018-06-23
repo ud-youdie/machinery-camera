@@ -21,21 +21,12 @@ var constraints = {
 };
 
 navigator.mediaDevices.getUserMedia(constraints)
-.then((stream) => { // success
+.then((stream) => {
     video.srcObject = stream;
-}).catch((err) => { // error
+}).catch((err) => {
     alert("カメラが使えないよ\n" + err.name + ":" + err.message);
     return;
 });
-
-function adjustDisplay(){
-    //canvasにカメラの映像のサイズを設定
-    var ratio = window.innerWidth / video.videoWidth;
-    video.width = window.innerWidth;
-    video.height = video.videoHeight * ratio;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-}
 
 let timer;
 let isCapturing = false;
@@ -47,19 +38,6 @@ video.addEventListener("loadedmetadata",(e) => {
         startCapture();
     },33);
 });
-
-function startCapture(){
-    //videoタグの描画をコンテキストに描画
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(video,0,0,canvas.width,canvas.height);
-    drawTomoko();
-}
-
-function drawTomoko(){
-    tomokoHeight = canvas.height * 0.7;
-    tomokoWidth = tomokoHeight * tomokoRatio;
-    context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
-}
 
 canvas.addEventListener("click",(e) => {
 
@@ -81,3 +59,24 @@ window.addEventListener("resize",(e) => {
         drawTomoko();
     }
 });
+
+function adjustDisplay(){
+    var ratio = window.innerWidth / video.videoWidth;
+    video.width = window.innerWidth;
+    video.height = video.videoHeight * ratio;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+}
+
+function startCapture(){
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(video,0,0,canvas.width,canvas.height);
+    drawTomoko();
+}
+
+function drawTomoko(){
+    tomokoHeight = canvas.height * 0.7;
+    tomokoWidth = tomokoHeight * tomokoRatio;
+    context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
+}
+
