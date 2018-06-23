@@ -77,6 +77,7 @@ canvas.addEventListener("click",(e) => {
 
 window.addEventListener("resize",(e) => {
     if(isCapturing){
+        adjustDisplay();
         drawTomoko();
     }
 });
