@@ -30,9 +30,13 @@ navigator.mediaDevices.getUserMedia(constraints)
 
 function adjustDisplay(){
     //canvasにカメラの映像のサイズを設定
+    /*
     var ratio = window.innerWidth / video.videoWidth;
     video.width = window.innerWidth;
     video.height = video.videoHeight * ratio;
+    video.width = window.innerWidth;
+    video.height = window.innerHeight;
+    */
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 }
@@ -76,6 +80,8 @@ canvas.addEventListener("click",(e) => {
 });
 
 window.addEventListener("resize",(e) => {
-    adjustDisplay();
-    drawTomoko();
+    if(isCapturing){
+        adjustDisplay();
+        drawTomoko();
+    }
 });
