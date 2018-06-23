@@ -22,7 +22,7 @@ var constraints = {
 
 navigator.mediaDevices.getUserMedia(constraints)
 .then((stream) => { // success
-    video.src = stream;
+    video.srcObject = stream;
 }).catch((err) => { // error
     alert("カメラが使えないよ\n" + err.name + ":" + err.message);
     return;
