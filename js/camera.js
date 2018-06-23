@@ -12,8 +12,13 @@ tomoko.onload = () => {
     tomokoWidth = tomoko.width;
     tomokoHeight = tomoko.height;
 }
+//0:横,1:縦
+const Orientation_Landscape = 0;
+const Orientation_Portrait = 1;
 
-setCamera();
+let ort = (window.innerWidth > window.innerHeight) ? Orientation_Landscape : Orientation_Portrait;
+
+setCamera(ort);
 
 let timer;
 let isCapturing = false;
@@ -48,10 +53,10 @@ window.addEventListener("orientationchange",(e) => {
     }
 });
 
-function setCamera(){
+function setCamera(ort){
 
     let aspectRatio;
-    if(window.innerWidth > window.innerHeight){
+    if(ort == Orientation_Landscape){
         aspectRatio = window.innerWidth / window.innerHeight;
     }else{
         aspectRatio = window.innerHeight / window.innerWidth;
@@ -60,6 +65,7 @@ function setCamera(){
     let constraints = {
         video: {
             facingMode : "environment",
+            width: 5000,
             aspectRatio: aspectRatio
         },
         audio: false
@@ -89,7 +95,7 @@ function startCapture(){
 }
 
 function drawTomoko(){
-    tomokoWidth = canvas.width / 4;
+    tomokoWidth = canvas.width / 3;
     tomokoHeight = tomokoWidth * tomokoRatio;
     context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
