@@ -15,9 +15,8 @@ tomoko.onload = () => {
 //0:横,1:縦
 const Orientation_Landscape = 0;
 const Orientation_Portrait = 1;
-let ort = (window.innerWidth > window.innerHeight) ? Orientation_Landscape : Orientation_Portrait;
 
-setCamera(ort);
+setCamera(getOrientation());
 
 let timer;
 let isCapturing = false;
@@ -45,15 +44,16 @@ canvas.addEventListener("click",(e) => {
 });
 
 window.addEventListener("orientationchange",(e) => {
-    /*
     if(isCapturing){
-        setCamera();
+        setCamera(getOrientation());
         adjustDisplay();
         drawTomoko();
     }
-    */
-   location.reload(false);
 });
+
+function getOrientation(){
+    return (window.innerWidth > window.innerHeight) ? Orientation_Landscape : Orientation_Portrait;
+}
 
 function setCamera(ort){
 
