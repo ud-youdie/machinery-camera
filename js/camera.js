@@ -8,25 +8,16 @@ let tomokoWidth;
 let tomokoHeight;
 let tomokoRatio;
 tomoko.onload = () => {
-    tomokoRatio = tomoko.width / tomoko.height;
+    tomokoRatio = tomoko.height / tomoko.width;
     tomokoWidth = tomoko.width;
     tomokoHeight = tomoko.height;
 }
+//0:横,1:縦
+const Orientation_Landscape = 0;
+const Orientation_Portrait = 1;
+let ort = (window.innerWidth > window.innerHeight) ? Orientation_Landscape : Orientation_Portrait;
 
-var constraints = {
-    video: {
-        facingMode : "environment"
-    },
-    audio: false
-};
-
-navigator.mediaDevices.getUserMedia(constraints)
-.then((stream) => {
-    video.srcObject = stream;
-}).catch((err) => {
-    alert("カメラが使えないよ\n" + err.name + ":" + err.message);
-    return;
-});
+setCamera(ort);
 
 let timer;
 let isCapturing = false;
@@ -53,12 +44,40 @@ canvas.addEventListener("click",(e) => {
 
 });
 
-window.addEventListener("resize",(e) => {
+window.addEventListener("orientationchange",(e) => {
     if(isCapturing){
+        setCamera();
         adjustDisplay();
         drawTomoko();
     }
 });
+
+function setCamera(ort){
+
+    let aspectRatio;
+    if(ort == Orientation_Landscape){
+        aspectRatio = window.innerWidth / window.innerHeight;
+    }else{
+        aspectRatio = window.innerHeight / window.innerWidth;
+    }
+
+    let constraints = {
+        video: {
+            facingMode : "environment",
+            width: 4000, //目指せ4K画質
+            aspectRatio: aspectRatio
+        },
+        audio: false
+    };
+    
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => {
+        video.srcObject = stream;
+    }).catch((err) => {
+        alert("カメラが使えないよ\n" + err.name + ":" + err.message);
+        return;
+    });
+}
 
 function adjustDisplay(){
     var ratio = window.innerWidth / video.videoWidth;
@@ -75,8 +94,8 @@ function startCapture(){
 }
 
 function drawTomoko(){
-    tomokoHeight = canvas.height * 0.7;
-    tomokoWidth = tomokoHeight * tomokoRatio;
+    tomokoWidth = canvas.width / 3;
+    tomokoHeight = tomokoWidth * tomokoRatio;
     context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
 
