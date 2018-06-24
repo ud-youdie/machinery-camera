@@ -130,14 +130,14 @@ function adjustControls(){
     let w;
     let h;
     if(ort == Orientation_Landscape){
-        h = window.innerHeight * 0.2;
+        h = window.innerHeight * 0.15;
         w = h;
         $("#shutter").css({
             "bottom": (window.innerHeight / 2) - (h/ 2),
             "left": "15px"
         });
     }else{
-        w = window.innerWidth * 0.2;
+        w = window.innerWidth * 0.15;
         h = w;
         $("#shutter").css({
             "bottom": "15px",
