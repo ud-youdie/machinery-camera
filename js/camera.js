@@ -3,10 +3,10 @@ let canvas = document.getElementById('overlay');
 let context = canvas.getContext('2d');
 
 let tomoko = new Image();
-tomoko.src = "./image/tomoko.png?" + new Date().getTime();
 let tomokoWidth;
 let tomokoHeight;
 let tomokoRatio;
+tomoko.src = "./image/tomoko.png?" + new Date().getTime();
 tomoko.onload = () => {
     tomokoRatio = tomoko.height / tomoko.width;
     tomokoWidth = tomoko.width;
@@ -58,6 +58,33 @@ $("#shutter").on("click",(e) => {
     isCapturing = false;
     clearInterval(timer);
     $("#controls").hide();
+});
+
+$("#sidemenu,#imagelist").hide();
+
+$("#menu").on("click",()=>{
+    $("#sidemenu").show();
+    $("#imagelist").show("slide");
+});
+
+$("#menucover").on("click",()=>{
+    $("#imagelist").hide("slide",()=>{
+        $("#sidemenu").hide();
+    });
+})
+
+$("#imagelist").find("li").on("click",(e)=>{
+
+    let src = $(e.currentTarget).attr("id");
+    tomoko = new Image();
+    tomoko.src = "./image/" + src + ".png?" + new Date().getTime();
+    tomoko.onload = () => {
+        tomokoRatio = tomoko.height / tomoko.width;
+        tomokoWidth = tomoko.width;
+        tomokoHeight = tomoko.height;
+    }
+    drawTomoko();
+    $("#menucover").trigger("click");
 });
 
 canvas.addEventListener("click",(e) => {
