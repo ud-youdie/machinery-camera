@@ -34,6 +34,7 @@ video.addEventListener("loadedmetadata",(e) => {
 });
 
 $("#torear").hide();
+$("#tofront").hide(); //☆機能停止中
 
 $("#tofront").on("click",()=>{
     clearInterval(timer);
