@@ -97,11 +97,13 @@ function setCamera(){
     let constraints = {
         video: {
             facingMode : (dir == Dir_Rear) ? "environment" : "user",
-            width: (dir == Dir_Rear) ? 4000 : 1280, //目指せ4K画質
+            width: (dir == Dir_Rear) ? 4000 : {min: 960, ideal: 1280,max: 1980}, //目指せ4K画質
             aspectRatio: aspectRatio
         },
         audio: false
     };
+    if(dir == Dir_Rear){}
+    constraints.video.width
     
     navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
