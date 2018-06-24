@@ -60,7 +60,8 @@ $("#shutter").on("click",(e) => {
     $("#controls").hide();
 });
 
-$("#sidemenu,#imagelist").hide();
+$("#sidemenu").hide();
+$("#imagelist").hide("slide");
 
 $("#menu").on("click",()=>{
     $("#sidemenu").show();
