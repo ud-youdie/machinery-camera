@@ -1,3 +1,4 @@
+$(()=>{
 let video = document.getElementById('display');
 let canvas = document.getElementById('overlay');
 let context = canvas.getContext('2d');
@@ -191,3 +192,4 @@ function drawTomoko(){
     tomokoHeight = tomokoWidth * tomokoRatio;
     context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
+});
