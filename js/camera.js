@@ -20,10 +20,11 @@ const Dir_Front = 0;
 const Dir_Rear = 1;
 var dir = Dir_Rear;
 
-setCamera();
-
 let timer;
 let isCapturing = false;
+
+setCamera();
+adjustControls();
 
 video.addEventListener("loadedmetadata",(e) => {
     adjustDisplay();
@@ -76,6 +77,7 @@ window.addEventListener("orientationchange",(e) => {
             clearInterval(timer);
             setCamera();
             adjustDisplay();
+            adjustControls();
             drawTomoko();
         },100);
     }
@@ -121,6 +123,31 @@ function adjustDisplay(){
     video.height = video.videoHeight * ratio;
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+}
+
+function adjustControls(){
+    let ort = getOrientation();
+    let w;
+    let h;
+    if(ort == Orientation_Landscape){
+        h = window.innerHeight * 0.1;
+        w = h;
+        $("#shutter").css({
+            "bottom": (window.innerHeight / 2) - (h/ 2),
+            "left": "15px"
+        });
+    }else{
+        w = window.innerWidth * 0.1;
+        h = w;
+        $("#shutter").css({
+            "bottom": "15px",
+            "left": (window.innerWidth / 2) - (w/ 2)
+        });
+    }
+    $("#controls").find("button").css({
+        "width": w + "px",
+        "height": h + "px"
+    });
 }
 
 function startCapture(){
