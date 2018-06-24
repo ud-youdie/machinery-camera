@@ -16,10 +16,15 @@ tomoko.onload = () => {
 const Orientation_Landscape = 0;
 const Orientation_Portrait = 1;
 
-setCamera(getOrientation());
+const Dir_Front = 0;
+const Dir_Rear = 1;
+var dir = Dir_Rear;
+
+setCamera();
 
 let timer;
 let isCapturing = false;
+
 video.addEventListener("loadedmetadata",(e) => {
     adjustDisplay();
     isCapturing = true;
@@ -28,25 +33,47 @@ video.addEventListener("loadedmetadata",(e) => {
     },33);
 });
 
-canvas.addEventListener("click",(e) => {
+$("#torear").hide();
 
-    if(isCapturing){
-        isCapturing = false;
-        clearInterval(timer);
-    }else{
+$("#tofront").on("click",()=>{
+    clearInterval(timer);
+    dir = Dir_Front;
+    setCamera();
+    $("#tofront").hide();
+    $("#torear").show();
+});
+
+$("#torear").on("click",()=>{
+    clearInterval(timer);
+    dir = Dir_Rear;
+    setCamera();
+    $("#torear").hide();
+    $("#tofront").show();
+});
+
+
+$("#shutter").on("click",(e) => {
+    isCapturing = false;
+    clearInterval(timer);
+    $("#controls").hide();
+});
+
+canvas.addEventListener("click",(e) => {
+    if(!isCapturing){
+        $("#controls").show();
         isCapturing = true;
         timer = setInterval(()=>{
             startCapture();
         },33);
+        $("#controls").show();
     }
-
 });
 
 window.addEventListener("orientationchange",(e) => {
     if(isCapturing){
         setTimeout(()=>{
             clearInterval(timer);
-            setCamera(getOrientation());
+            setCamera();
             adjustDisplay();
             drawTomoko();
         },100);
@@ -57,8 +84,9 @@ function getOrientation(){
     return (window.innerWidth > window.innerHeight) ? Orientation_Landscape : Orientation_Portrait;
 }
 
-function setCamera(ort){
+function setCamera(){
 
+    let ort = getOrientation();
     let aspectRatio;
     if(ort == Orientation_Landscape){
         aspectRatio = window.innerWidth / window.innerHeight;
@@ -68,8 +96,8 @@ function setCamera(ort){
 
     let constraints = {
         video: {
-            facingMode : "environment",
-            width: 4000, //目指せ4K画質
+            facingMode : (dir == Dir_Rear) ? "environment" : "user",
+            width: (dir == Dir_Rear) ? 4000 : 1280, //目指せ4K画質
             aspectRatio: aspectRatio
         },
         audio: false
@@ -99,8 +127,9 @@ function startCapture(){
 }
 
 function drawTomoko(){
-    tomokoWidth = canvas.width / 3;
+    let ort = getOrientation();
+    let ratio = ort == Orientation_Landscape ? 3 : 2;
+    tomokoWidth = canvas.width / ratio;
     tomokoHeight = tomokoWidth * tomokoRatio;
     context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
 }
-
