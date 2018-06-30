@@ -62,21 +62,19 @@ $(()=>{
         $("#controls").hide();
     });
 
-    $("#sidemenu").hide();
-    $("#imagelist").hide();
+    $("#menucover").hide();
 
     $("#menu").on("click",()=>{
-        $("#sidemenu").show();
-        $("#imagelist").show("slide");
+        $("#menucover").show();
+        $("#sidemenu").addClass("show");
     });
 
     $("#menucover").on("click",()=>{
-        $("#imagelist").hide("slide",()=>{
-            $("#sidemenu").hide();
-        });
+        $("#sidemenu").removeClass("show");
+        $("#menucover").hide();
     })
 
-    $("#imagelist").find("li").on("click",(e)=>{
+    $("#sidemenu").find("li").on("click",(e)=>{
 
         let src = $(e.currentTarget).attr("id");
         tomoko = new Image();
@@ -85,9 +83,10 @@ $(()=>{
             tomokoRatio = tomoko.height / tomoko.width;
             tomokoWidth = tomoko.width;
             tomokoHeight = tomoko.height;
+            drawTomoko();
         }
-        drawTomoko();
-        $("#menucover").trigger("click");
+        $("#sidemenu").removeClass("show");
+        $("#menucover").hide();
     });
 
     canvas.addEventListener("click",(e) => {
