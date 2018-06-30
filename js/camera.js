@@ -103,7 +103,7 @@ $(()=>{
     let y;
     let relX;
     let relY
-    canvas.addEventListener("mousedown",(e) => {
+    canvas.addEventListener("touchstart",(e) => {
 
         if(!isCapturing){return;}
 
@@ -124,7 +124,7 @@ $(()=>{
 
     });
 
-    canvas.addEventListener("mousemove",(e) => {
+    canvas.addEventListener("touchmove",(e) => {
         // キャンバスの左上端の座標を取得
         var offsetX = canvas.getBoundingClientRect().left;
         var offsetY = canvas.getBoundingClientRect().top;
@@ -140,7 +140,7 @@ $(()=>{
         }
     });
       
-    canvas.addEventListener("mouseup",(e) => {
+    canvas.addEventListener("touchend",(e) => {
         dragging = false; // ドラッグ終了
     });
 
