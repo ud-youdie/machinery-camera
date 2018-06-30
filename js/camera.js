@@ -125,6 +125,9 @@ $(()=>{
     });
 
     canvas.addEventListener("touchmove",(e) => {
+
+        e.preventDefault();
+        
         // キャンバスの左上端の座標を取得
         var offsetX = canvas.getBoundingClientRect().left;
         var offsetY = canvas.getBoundingClientRect().top;
