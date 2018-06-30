@@ -31,6 +31,7 @@ body{
     left: 0;
     display: block;
 }
+/*
 #controls{
     width: 100%;
     max-width: 100%;
@@ -40,7 +41,9 @@ body{
     left: 0;
     display: block;
 }
-#controls button{
+*/
+/*#controls*/
+.control{
     background-color: transparent;
     border-style: none;
     margin: 0;
@@ -61,6 +64,7 @@ body{
     top: 15px;
     left: 15px;
 }
+/*
 #tofront{
     background-image: url(../image/controls/camera_front.png);
     background-repeat: no-repeat;
@@ -79,7 +83,7 @@ body{
     top: 15px;
     right: 15px;
 }
-
+*/
 #menucover{
     width: 100%;
     max-width: 100%;
