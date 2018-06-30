@@ -112,8 +112,8 @@ $(()=>{
         var offsetY = canvas.getBoundingClientRect().top;
 
         // マウスが押された座標を取得
-        x = (e.clientX - offsetX) / videoRatio;
-        y = (e.clientY - offsetY) / videoRatio;
+        x = (e.changedTouches[0].clientX - offsetX) / videoRatio;
+        y = (e.changedTouches[0].clientY - offsetY) / videoRatio;
 
         // オブジェクト上の座標かどうかを判定
         if (tomokoX < x && (tomokoX + tomokoWidth) > x && tomokoY < y && (tomokoY + tomokoHeight) > y) {
@@ -127,14 +127,14 @@ $(()=>{
     canvas.addEventListener("touchmove",(e) => {
 
         e.preventDefault();
-        
+
         // キャンバスの左上端の座標を取得
         var offsetX = canvas.getBoundingClientRect().left;
         var offsetY = canvas.getBoundingClientRect().top;
       
         // マウスが移動した先の座標を取得
-        x = (e.clientX - offsetX) / videoRatio;
-        y = (e.clientY - offsetY) / videoRatio;
+        x = (e.changedTouches[0].clientX - offsetX) / videoRatio;
+        y = (e.changedTouches[0].clientY - offsetY) / videoRatio;
       
         // ドラッグが開始されていればオブジェクトの座標を更新して再描画
         if (dragging) {
