@@ -1,18 +1,22 @@
 $(()=>{
 
     let video = document.getElementById('display');
+    let videoRatio;
     let canvas = document.getElementById('overlay');
     let context = canvas.getContext('2d');
 
     let tomoko = new Image();
     let tomokoWidth;
     let tomokoHeight;
+    let tomokoX;
+    let tomokoY;
     let tomokoRatio;
     tomoko.src = "./image/tomoko.png?" + new Date().getTime();
     tomoko.onload = () => {
         tomokoRatio = tomoko.height / tomoko.width;
         tomokoWidth = tomoko.width;
         tomokoHeight = tomoko.height;
+        adjustTomoko();
     }
     //0:横,1:縦
     const Orientation_Landscape = 0;
@@ -30,6 +34,7 @@ $(()=>{
 
     video.addEventListener("loadedmetadata",(e) => {
         adjustDisplay();
+        adjustTomoko();
         isCapturing = true;
         timer = setInterval(()=>{
             startCapture();
@@ -59,46 +64,87 @@ $(()=>{
     $("#shutter").on("click",(e) => {
         isCapturing = false;
         clearInterval(timer);
-        $("#controls").hide();
+        $(".control").hide();
     });
 
-    $("#sidemenu").hide();
-    $("#imagelist").hide();
+    $("#menucover").hide();
 
     $("#menu").on("click",()=>{
-        $("#sidemenu").show();
-        $("#imagelist").show("slide");
+        $("#menucover").show();
+        $("#sidemenu").addClass("show");
     });
 
     $("#menucover").on("click",()=>{
-        $("#imagelist").hide("slide",()=>{
-            $("#sidemenu").hide();
-        });
+        $("#sidemenu").removeClass("show");
+        $("#menucover").hide();
     })
 
-    $("#imagelist").find("li").on("click",(e)=>{
+    $("#sidemenu").find("li").on("click",(e)=>{
 
         let src = $(e.currentTarget).attr("id");
-        tomoko = new Image();
         tomoko.src = "./image/" + src + ".png?" + new Date().getTime();
-        tomoko.onload = () => {
-            tomokoRatio = tomoko.height / tomoko.width;
-            tomokoWidth = tomoko.width;
-            tomokoHeight = tomoko.height;
-        }
-        drawTomoko();
-        $("#menucover").trigger("click");
+        $("#sidemenu").removeClass("show");
+        $("#menucover").hide();
     });
 
     canvas.addEventListener("click",(e) => {
         if(!isCapturing){
-            $("#controls").show();
+            $(".control").show();
             isCapturing = true;
             timer = setInterval(()=>{
                 startCapture();
             },33);
-            $("#controls").show();
+            $(".control").show();
         }
+    });
+
+    let dragging = false;
+    let x;
+    let y;
+    let relX;
+    let relY
+    canvas.addEventListener("touchstart",(e) => {
+
+        if(!isCapturing){return;}
+
+        // キャンバスの左上端の座標を取得
+        var offsetX = canvas.getBoundingClientRect().left;
+        var offsetY = canvas.getBoundingClientRect().top;
+
+        // マウスが押された座標を取得
+        x = (e.changedTouches[0].clientX - offsetX) / videoRatio;
+        y = (e.changedTouches[0].clientY - offsetY) / videoRatio;
+
+        // オブジェクト上の座標かどうかを判定
+        if (tomokoX < x && (tomokoX + tomokoWidth) > x && tomokoY < y && (tomokoY + tomokoHeight) > y) {
+            dragging = true; // ドラッグ開始
+            relX = tomokoX - x;
+            relY = tomokoY - y;
+        }
+
+    });
+
+    canvas.addEventListener("touchmove",(e) => {
+
+        e.preventDefault();
+
+        // キャンバスの左上端の座標を取得
+        var offsetX = canvas.getBoundingClientRect().left;
+        var offsetY = canvas.getBoundingClientRect().top;
+      
+        // マウスが移動した先の座標を取得
+        x = (e.changedTouches[0].clientX - offsetX) / videoRatio;
+        y = (e.changedTouches[0].clientY - offsetY) / videoRatio;
+      
+        // ドラッグが開始されていればオブジェクトの座標を更新して再描画
+        if (dragging) {
+          tomokoX = x + relX;
+          tomokoY = y + relY;
+        }
+    });
+      
+    canvas.addEventListener("touchend",(e) => {
+        dragging = false; // ドラッグ終了
     });
 
     window.addEventListener("orientationchange",(e) => {
@@ -108,8 +154,9 @@ $(()=>{
                 setCamera();
                 adjustDisplay();
                 adjustControls();
+                adjustTomoko();
                 drawTomoko();
-            },100);
+            },300);
         }
     });
 
@@ -148,9 +195,9 @@ $(()=>{
     }
 
     function adjustDisplay(){
-        var ratio = window.innerWidth / video.videoWidth;
+        videoRatio = window.innerWidth / video.videoWidth;
         video.width = window.innerWidth;
-        video.height = video.videoHeight * ratio;
+        video.height = video.videoHeight * videoRatio;
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
     }
@@ -174,7 +221,7 @@ $(()=>{
                 "left": (window.innerWidth / 2) - (w/ 2)
             });
         }
-        $("#controls").find("button").css({
+        $("#wrapper").find("button").css({
             "width": w + "px",
             "height": h + "px"
         });
@@ -186,12 +233,17 @@ $(()=>{
         drawTomoko();
     }
 
-    function drawTomoko(){
+    function adjustTomoko(){
         let ort = getOrientation();
         let ratio = ort == Orientation_Landscape ? 3 : 2;
         tomokoWidth = canvas.width / ratio;
         tomokoHeight = tomokoWidth * tomokoRatio;
-        context.drawImage(tomoko,canvas.width - tomokoWidth - 10,canvas.height - tomokoHeight,tomokoWidth,tomokoHeight);
+        tomokoX = canvas.width - tomokoWidth - 10;
+        tomokoY = canvas.height - tomokoHeight;
+    }
+
+    function drawTomoko(){
+        context.drawImage(tomoko,tomokoX,tomokoY,tomokoWidth,tomokoHeight);
     }
 
 });
